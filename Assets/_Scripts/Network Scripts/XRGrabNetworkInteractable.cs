@@ -20,10 +20,21 @@ public class XRGrabNetworkInteractable : XRGrabInteractable
         
     }
 
-    protected override void OnSelectEntered(SelectEnterEventArgs args)
+    protected override void OnSelectEntered(SelectEnterEventArgs interactor)
     {
         photonView.RequestOwnership();
-        base.OnSelectEntered(args);
+        base.OnSelectEntered(interactor);
     }
+
+    protected override void OnSelectExiting(SelectExitEventArgs interactor)
+    {
+        base.OnSelectExiting(interactor);
+        if (PhotonNetwork.IsConnected && photonView.IsMine)
+        {
+            photonView.TransferOwnership(PhotonNetwork.MasterClient);
+        }
+    }
+
+  
 
 }
