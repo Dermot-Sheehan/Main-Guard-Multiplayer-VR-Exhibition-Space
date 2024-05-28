@@ -181,6 +181,7 @@ Transform:
   m_Children:
   - {fileID: 164612311400672266}
   - {fileID: 1141840967733879418}
+  - {fileID: 7385465608093494380}
   m_Father: {fileID: 2799115978579621764}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &5377517178132596840
@@ -385,12 +386,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6749586394547884186}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 4, y: 4, z: 4}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 8365531074232027781}
+  m_Father: {fileID: 6555229885613405956}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!82 &3468422955265147923
 AudioSource:
@@ -413,7 +414,7 @@ AudioSource:
   Priority: 128
   DopplerLevel: 1
   MinDistance: 10
-  MaxDistance: 30
+  MaxDistance: 20
   Pan2D: 0
   rolloffMode: 0
   BypassEffects: 0
@@ -448,7 +449,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -646,7 +647,6 @@ Transform:
   - {fileID: 2799115978579621764}
   - {fileID: 3551831079234273490}
   - {fileID: 6224659207194849063}
-  - {fileID: 7385465608093494380}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!114 &-7564926256497199849
