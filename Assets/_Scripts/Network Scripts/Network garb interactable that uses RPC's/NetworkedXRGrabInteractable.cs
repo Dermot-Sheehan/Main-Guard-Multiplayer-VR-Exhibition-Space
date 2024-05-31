@@ -7,21 +7,26 @@ using Photon.Pun;
 public class NetworkedXRGrabInteractable : XRGrabInteractable
 {
     private PhotonView photonView;
+    private Rigidbody rb;
 
     protected override void Awake()
     {
         base.Awake();
         photonView = GetComponent<PhotonView>();
+        rb = GetComponent<Rigidbody>();
     }
 
     protected override void OnSelectEntered(XRBaseInteractor interactor)
     {
         base.OnSelectEntered(interactor);
 
-        if (PhotonNetwork.IsConnected && photonView.IsMine)
+        if (PhotonNetwork.IsConnected)
         {
-            photonView.RequestOwnership();
-            photonView.RPC("RPC_HandleObjectGrabbed", RpcTarget.AllBuffered, photonView.ViewID, interactor.transform.position, interactor.transform.rotation);
+            if (!photonView.IsMine)
+            {
+                photonView.RequestOwnership();
+            }
+            photonView.RPC("RPC_HandleObjectGrabbed", RpcTarget.AllBuffered, photonView.ViewID);
         }
     }
 
@@ -31,12 +36,12 @@ public class NetworkedXRGrabInteractable : XRGrabInteractable
 
         if (PhotonNetwork.IsConnected && photonView.IsMine)
         {
-            photonView.RPC("RPC_HandleObjectReleased", RpcTarget.AllBuffered, photonView.ViewID);
+            photonView.RPC("RPC_HandleObjectReleased", RpcTarget.AllBuffered, photonView.ViewID, rb.velocity, rb.angularVelocity);
         }
     }
 
     [PunRPC]
-    void RPC_HandleObjectGrabbed(int viewID, Vector3 position, Quaternion rotation)
+    void RPC_HandleObjectGrabbed(int viewID)
     {
         PhotonView grabbedPhotonView = PhotonView.Find(viewID);
         if (grabbedPhotonView != null && grabbedPhotonView.TryGetComponent(out Rigidbody rb))
@@ -45,20 +50,19 @@ public class NetworkedXRGrabInteractable : XRGrabInteractable
             rb.detectCollisions = false;
             rb.velocity = Vector3.zero;
             rb.angularVelocity = Vector3.zero;
-
-            grabbedPhotonView.transform.position = position;
-            grabbedPhotonView.transform.rotation = rotation;
         }
     }
 
     [PunRPC]
-    void RPC_HandleObjectReleased(int viewID)
+    void RPC_HandleObjectReleased(int viewID, Vector3 velocity, Vector3 angularVelocity)
     {
         PhotonView releasedPhotonView = PhotonView.Find(viewID);
         if (releasedPhotonView != null && releasedPhotonView.TryGetComponent(out Rigidbody rb))
         {
             rb.isKinematic = false;
             rb.detectCollisions = true;
+            rb.velocity = velocity;
+            rb.angularVelocity = angularVelocity;
         }
     }
 
